@@ -8,5 +8,9 @@
         "32": "icons/star-32.png",
         "48": "icons/star-48.png",
         "128": "icons/star-128.png"
+    },
+    "action": {
+        "default_icon": "icons/star-128.png",
+        "default_popup": "menu.html"
     }
   }
