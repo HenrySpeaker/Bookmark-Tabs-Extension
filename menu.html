@@ -16,6 +16,32 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+
+        <form id="add-bookmarks-form">
+            <input type="radio" id="default" name="destination">
+            <label for="default">Default folder</label>
+            <br>
+            <input type="radio" id="specify" name="destination">
+            <label for="specify">Specify a folder</label>
+    
+            <p>
+                Include all, regular, or incognito windows or current window?
+            </p>
+            <input type="radio" id="all" name="window-type" value="all">
+            <label for="all">All</label>
+            <br>
+            <input type="radio" id="regular" name="window-type" value="regular">
+            <label for="regular">Regular</label>
+            <br>
+            <input type="radio" id="incognito" name="window-type" value="incognito">
+            <label for="incognito">Incognito</label>
+            <br>
+            <input type="radio" id="current" name="window-type" value="current">
+            <label for="current">Current window</label>
+
+            <input type="button" value="Bookmark tabs" id="add-bookmarks-btn">
+        </form>
+
         
         <script src="script.js" type="module"></script>
     </body>
