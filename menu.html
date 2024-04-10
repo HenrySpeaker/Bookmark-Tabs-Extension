@@ -21,14 +21,14 @@
             <input type="radio" id="default" name="destination" value="default">
             <label for="default">Default folder</label>
             <br>
-            <input type="radio" id="specify" name="destination" value="specify">
+            <input type="radio" id="specify" name="destination" value="specify" checked>
             <label for="specify">Specify a folder</label>
             <select name="destination-folder" id="select-destination-folder"></select>
     
             <p>
                 Include all, regular, or incognito windows or current window?
             </p>
-            <input type="radio" id="all" name="window-type" value="all">
+            <input type="radio" id="all" name="window-type" value="all" checked>
             <label for="all">All</label>
             <br>
             <input type="radio" id="regular" name="window-type" value="regular">
@@ -39,7 +39,19 @@
             <br>
             <input type="radio" id="current" name="window-type" value="current">
             <label for="current">Current window</label>
+            <br>
 
+            <p>
+                Choose a title for the root folder:
+            </p>
+            <input type="radio" id="date" value="date" name="root-name" checked>
+            <label for="date" id="date-label">Today's Date</label>
+            <br>
+            <input type="radio" id="custom-name-radio" value="custom-name" name="root-name">
+            <label for="custom-name-radio">Custom name: <input type="text" id="custom-name"></label>
+
+
+            <br>
             <input type="button" value="Bookmark tabs" id="add-bookmarks-btn">
         </form>
 
