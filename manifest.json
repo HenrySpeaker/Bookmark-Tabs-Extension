@@ -11,7 +11,7 @@
     },
     "action": {
         "default_icon": "icons/star-128.png",
-        "default_popup": "menu.html"
+        "default_popup": "pages/menu.html"
     },
     "permissions": ["bookmarks", "tabs"]
   }

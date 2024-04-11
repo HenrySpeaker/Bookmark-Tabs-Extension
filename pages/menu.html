@@ -10,7 +10,7 @@
         <title>Bookmark All Tabs</title>
         <meta name="description" content="An extension to bookmark all tabs">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="menu-styles.css">
+        <link rel="stylesheet" href="../menu-styles.css">
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -26,7 +26,7 @@
             <select name="destination-folder" id="select-destination-folder"></select>
     
             <p>
-                Include all, regular, or incognito windows or current window?
+                Include all, regular, or incognito windows, or current window?
             </p>
             <input type="radio" id="all" name="window-type" value="all" checked>
             <label for="all">All</label>
@@ -50,12 +50,10 @@
             <input type="radio" id="custom-name-radio" value="custom-name" name="root-name">
             <label for="custom-name-radio">Custom name: <input type="text" id="custom-name"></label>
 
-
             <br>
             <input type="button" value="Bookmark tabs" id="add-bookmarks-btn">
         </form>
 
-        
-        <script src="script.js" type="module"></script>
+        <script src="../scripts/script.js" type="module"></script>
     </body>
 </html>
