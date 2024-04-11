@@ -1,10 +1,11 @@
+import { addDestinations } from "./utils.js";
+
 const windows = await chrome.windows.getAll();
 const allTabs = await Promise.all(windows.map((window) => chrome.tabs.query({ windowId: window.id })));
 const bookmarks = (await chrome.bookmarks.getTree())[0];
 
 const addBtn = document.getElementById("add-bookmarks-btn");
 const destSelect = document.getElementById("select-destination-folder");
-let destinationElements = [];
 const dateLabel = document.getElementById("date-label");
 
 const currentDate = new Date();
@@ -12,28 +13,6 @@ const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()).p
   currentDate.getDate()
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
-
-function addDestinations(bookmarkNode, currentLevel) {
-  if ("url" in bookmarkNode || currentLevel > 2) {
-    return;
-  }
-
-  if (bookmarkNode.id === "0") {
-    destinationElements = [];
-  } else {
-    destinationElements.push(
-      `<option value="${bookmarkNode.id}">${"&emsp;".repeat(currentLevel)}${bookmarkNode.title}</option>`
-    );
-  }
-
-  bookmarkNode.children.forEach((child, idx) => {
-    addDestinations(child, currentLevel + 1);
-  });
-
-  if (currentLevel === 0) {
-    destSelect.innerHTML = destinationElements.join("");
-  }
-}
 
 async function addBookmarks(formElem) {
   const formData = new FormData(formElem);
@@ -94,7 +73,7 @@ async function addBookmarks(formElem) {
   );
 }
 
-addDestinations(bookmarks, 0);
+addDestinations(bookmarks, 0, destSelect);
 
 document.getElementById("add-bookmarks-form").addEventListener("click", async function (e) {
   if (e.target === addBtn) {
