@@ -2,17 +2,28 @@ import { addDestinations } from "./utils.js";
 
 const windows = await chrome.windows.getAll();
 const allTabs = await Promise.all(windows.map((window) => chrome.tabs.query({ windowId: window.id })));
-const bookmarks = (await chrome.bookmarks.getTree())[0];
 
 const addBtn = document.getElementById("add-bookmarks-btn");
 const destSelect = document.getElementById("select-destination-folder");
 const dateLabel = document.getElementById("date-label");
+const defaultFolderBtn = document.getElementById("default");
+const defaultFolderName = document.getElementById("default-folder-name");
 
 const currentDate = new Date();
 const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()).padStart(2, "0")}-${String(
   currentDate.getDate()
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
+
+const storage = chrome.storage.local;
+const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
+
+if (!defaultFolderID) {
+  defaultFolderBtn.setAttribute("disabled", "");
+  defaultFolderName.textContent = "Not set";
+} else {
+  defaultFolderName.textContent = (await chrome.bookmarks.get(defaultFolderID))[0].title;
+}
 
 async function addBookmarks(formElem) {
   const formData = new FormData(formElem);
@@ -25,6 +36,7 @@ async function addBookmarks(formElem) {
 
   switch (destType) {
     case "default":
+      destNodeID = defaultFolderID ?? "2";
       break;
     case "specify":
       destNodeID = formData.get("destination-folder");
@@ -73,7 +85,7 @@ async function addBookmarks(formElem) {
   );
 }
 
-addDestinations(bookmarks, 0, destSelect);
+await addDestinations(destSelect);
 
 document.getElementById("add-bookmarks-form").addEventListener("click", async function (e) {
   if (e.target === addBtn) {

@@ -19,7 +19,7 @@
 
         <form id="add-bookmarks-form">
             <input type="radio" id="default" name="destination" value="default">
-            <label for="default">Default folder</label>
+            <label for="default">Default folder</label><p>Current default is: <span id="default-folder-name"></span></p><a href="defaultdestination.html">Choose a default folder</a>
             <br>
             <input type="radio" id="specify" name="destination" value="specify" checked>
             <label for="specify">Specify a folder</label>
@@ -54,6 +54,6 @@
             <input type="button" value="Bookmark tabs" id="add-bookmarks-btn">
         </form>
 
-        <script src="../scripts/script.js" type="module"></script>
+        <script src="../scripts/menu.js" type="module"></script>
     </body>
 </html>
