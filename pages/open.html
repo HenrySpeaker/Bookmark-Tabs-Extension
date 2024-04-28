@@ -16,43 +16,46 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+        <div id="spinner"></div>
 
-        <form id="open-form">
-            <p>
-                Choose the folder to be opened:
-            </p>
-            <select name="folder-select" id="folder-select"></select>
+        <div id="contents">
+            <form id="open-form">
+                <p>
+                    Choose the folder to be opened:
+                </p>
+                <select name="folder-select" id="folder-select"></select>
 
-            <p>
-                Choose how the bookmarks will be opened:
-            </p>
-            <input type="radio" name="depth-choice" id="windowed" value="windowed" checked>
-            <label for="windowed">Separate windows</label>
-            <br>
-            <input type="radio" name="depth-choice" id="flat" value="flat">
-            <label for="flat">All bookmarks in one window</label>
-            <br>
+                <p>
+                    Choose how the bookmarks will be opened:
+                </p>
+                <input type="radio" name="depth-choice" id="windowed" value="windowed" checked>
+                <label for="windowed">Separate windows</label>
+                <br>
+                <input type="radio" name="depth-choice" id="flat" value="flat">
+                <label for="flat">All bookmarks in one window</label>
+                <br>
 
-            <p>
-                Choose the window type:
-            </p>
-            <input type="radio" name="window-type" id="regular" value="regular" checked>
-            <label for="regular">Regular</label>
-            <input type="radio" name="window-type" id="incognito" value="incognito">
-            <label for="incognito">Incognito</label>
+                <p>
+                    Choose the window type:
+                </p>
+                <input type="radio" name="window-type" id="regular" value="regular" checked>
+                <label for="regular">Regular</label>
+                <input type="radio" name="window-type" id="incognito" value="incognito">
+                <label for="incognito">Incognito</label>
 
-            <p>
-                Choose the window state:
-            </p>
-            <input type="radio" name="max-min-window" id="max-window" value="maximized" checked>
-            <label for="max-window">Maximized</label>
-            <input type="radio" name="max-min-window" id="min-window" value="minimized">
-            <label for="min-window">Minimized</label>
+                <p>
+                    Choose the window state:
+                </p>
+                <input type="radio" name="max-min-window" id="max-window" value="maximized" checked>
+                <label for="max-window">Maximized</label>
+                <input type="radio" name="max-min-window" id="min-window" value="minimized">
+                <label for="min-window">Minimized</label>
 
-            <input type="button" id="open-btn" value="Open bookmarks">
-        </form>
+                <input type="button" id="open-btn" value="Open bookmarks">
+            </form>
 
-        <a href="menu.html">Return to main menu</a>
+            <a href="menu.html">Return to main menu</a>
+        </div>
         
         <script src="../scripts/open.js" async defer type="module"></script>
     </body>

@@ -23,3 +23,13 @@ export async function addDestinations(selectElement) {
 
   selectElement.innerHTML = destinationElements.join("");
 }
+
+export async function runStartup(startupFunction) {
+  const contentsDiv = document.getElementById("contents");
+  contentsDiv.style.visibility = "hidden";
+
+  await startupFunction();
+
+  document.getElementById("spinner").remove();
+  contentsDiv.style.visibility = "visible";
+}
