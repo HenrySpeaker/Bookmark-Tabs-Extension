@@ -1,4 +1,4 @@
-const maxLevel = 2;
+const maxLevel = 3;
 
 export async function addDestinations(selectElement) {
   const bookmarkNode = (await chrome.bookmarks.getTree())[0];
@@ -8,7 +8,7 @@ export async function addDestinations(selectElement) {
   while (nodeStack.length > 0) {
     const { node: currNode, level: currLevel } = nodeStack.pop();
 
-    if (currNode.id !== "0" && !("url" in currNode)) {
+    if (currNode.id !== "0" && !("url" in currNode) && currNode.children.length > 0) {
       destinationElements.push(
         `<option value="${currNode.id}">${"&emsp;".repeat(currLevel)}${currNode.title}</option>`
       );
