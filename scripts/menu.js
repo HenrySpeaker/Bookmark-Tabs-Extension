@@ -92,4 +92,8 @@ document.getElementById("add-bookmarks-form").addEventListener("click", async fu
     e.preventDefault();
     await addBookmarks(e.target.parentNode);
   }
+
+  if (e.target === document.getElementById("custom-name")) {
+    document.getElementById("custom-name-radio").checked = true;
+  }
 });
