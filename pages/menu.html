@@ -10,7 +10,10 @@
         <title>Bookmark All Tabs</title>
         <meta name="description" content="An extension to bookmark all tabs">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../menu-styles.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -19,44 +22,79 @@
         <div id="spinner"></div>
 
         <div id="contents">
-            <form id="add-bookmarks-form">
-                <input type="radio" id="default" name="destination" value="default">
-                <label for="default">Default folder</label><p>Current default is: <span id="default-folder-name"></span></p><a href="defaultdestination.html">Choose a default folder</a>
-                <br>
-                <input type="radio" id="specify" name="destination" value="specify" checked>
-                <label for="specify">Specify a folder</label>
-                <select name="destination-folder" id="select-destination-folder"></select>
-        
-                <p>
-                    Include all, regular, or incognito windows, or current window?
-                </p>
-                <input type="radio" id="all" name="window-type" value="all" checked>
-                <label for="all">All</label>
-                <br>
-                <input type="radio" id="regular" name="window-type" value="regular">
-                <label for="regular">Regular</label>
-                <br>
-                <input type="radio" id="incognito" name="window-type" value="incognito">
-                <label for="incognito">Incognito</label>
-                <br>
-                <input type="radio" id="current" name="window-type" value="current">
-                <label for="current">Current window</label>
-                <br>
+            <nav>
+                <a class="link" href="open.html">Open saved bookmarks ></a>
+                <a class="link" href="defaultdestination.html">Choose a default folder ></a>
+            </nav>
+
+            <div class="container">
+                <h1>Bookmark Tabs</h1>
+                <form id="add-bookmarks-form">
+                    <div class="choice-group">
+                        <h2>Choose the destination folder:</h2>
+
+                        <div class="choice-list">
+                            <div class="choice-item">
+                                <input type="radio" id="default" name="destination" value="default">
+                                <label for="default">Default folder</label>
+                                <p>Current default is: <span id="default-folder-name"></span></p>
+                            </div>
+                            
+                            <div class="choice-item">
+                                <input type="radio" id="specify" name="destination" value="specify" checked>
+                                <label for="specify">Specify a folder</label>
+                                <select name="destination-folder" id="select-destination-folder"></select>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="choice-group">
+                        <h2>
+                            Choose which tabs should be bookmarked:
+                        </h2>
+                        <div class="choice-list">
+                            <div class="choice-item">
+                                <input type="radio" id="all" name="window-type" value="all" checked>
+                                <label for="all">All</label>
+                            </div>
+
+                            <div class="choice-item">
+                                <input type="radio" id="regular" name="window-type" value="regular">
+                                <label for="regular">Regular</label>
+                            </div>
+
+                            <div class="choice-item">
+                                <input type="radio" id="incognito" name="window-type" value="incognito">
+                                <label for="incognito">Incognito</label>
+                            </div>
+
+                            <div class="choice-item">
+                                <input type="radio" id="current" name="window-type" value="current">
+                                <label for="current">Current window</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="choice-group">
+                        <h2>
+                            Choose a title for the root folder:
+                        </h2>
+                        <div class="choice-list">
+                            <div class="choice-item">
+                                <input type="radio" id="date" value="date" name="root-name" checked>
+                                <label for="date" id="date-label">Today's Date</label>
+                            </div>
+                            
+                            <div class="choice-item">
+                                <input type="radio" id="custom-name-radio" value="custom-name" name="root-name">
+                                <label for="custom-name-radio">Custom name: <input type="text" id="custom-name"></label>
+                            </div>
+                        </div>
+                    </div>
     
-                <p>
-                    Choose a title for the root folder:
-                </p>
-                <input type="radio" id="date" value="date" name="root-name" checked>
-                <label for="date" id="date-label">Today's Date</label>
-                <br>
-                <input type="radio" id="custom-name-radio" value="custom-name" name="root-name">
-                <label for="custom-name-radio">Custom name: <input type="text" id="custom-name"></label>
-    
-                <br>
-                <input type="button" value="Bookmark tabs" id="add-bookmarks-btn">
-            </form>
-    
-            <a href="open.html">Open saved bookmarks</a>
+                    <input class="btn" type="button" value="Bookmark tabs" id="add-bookmarks-btn">
+                </form>
+            </div>
         </div>
 
         <script src="../scripts/menu.js" type="module"></script>

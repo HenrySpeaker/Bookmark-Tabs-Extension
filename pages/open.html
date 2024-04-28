@@ -10,7 +10,10 @@
         <title>Open Saved Bookmarks</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../menu-styles.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -19,42 +22,55 @@
         <div id="spinner"></div>
 
         <div id="contents">
-            <form id="open-form">
-                <p>
-                    Choose the folder to be opened:
-                </p>
-                <select name="folder-select" id="folder-select"></select>
+            <nav>
+                <a class="link" href="menu.html">Return to main menu</a>
+            </nav>
+            <div class="container">
+                <h1>Open Bookmarks</h1>
 
-                <p>
-                    Choose how the bookmarks will be opened:
-                </p>
-                <input type="radio" name="depth-choice" id="windowed" value="windowed" checked>
-                <label for="windowed">Separate windows</label>
-                <br>
-                <input type="radio" name="depth-choice" id="flat" value="flat">
-                <label for="flat">All bookmarks in one window</label>
-                <br>
+                <form id="open-form">
+                    <div class="choice-group">
+                        <h2>
+                            Choose the folder to be opened:
+                        </h2>
+                        <select name="folder-select" id="folder-select"></select>
+                    </div>
+    
+                    <div class="choice-group">
+                        <h2>
+                            Choose how the bookmarks will be opened:
+                        </h2>
+                        <input type="radio" name="depth-choice" id="windowed" value="windowed" checked>
+                        <label for="windowed">Separate windows</label>
+                        <br>
+                        <input type="radio" name="depth-choice" id="flat" value="flat">
+                        <label for="flat">All bookmarks in one window</label>
+                    </div>
 
-                <p>
-                    Choose the window type:
-                </p>
-                <input type="radio" name="window-type" id="regular" value="regular" checked>
-                <label for="regular">Regular</label>
-                <input type="radio" name="window-type" id="incognito" value="incognito">
-                <label for="incognito">Incognito</label>
+                    <div class="choice-group">
 
-                <p>
-                    Choose the window state:
-                </p>
-                <input type="radio" name="max-min-window" id="max-window" value="maximized" checked>
-                <label for="max-window">Maximized</label>
-                <input type="radio" name="max-min-window" id="min-window" value="minimized">
-                <label for="min-window">Minimized</label>
-
-                <input type="button" id="open-btn" value="Open bookmarks">
-            </form>
-
-            <a href="menu.html">Return to main menu</a>
+                        <h2>
+                            Choose the window type:
+                        </h2>
+                        <input type="radio" name="window-type" id="regular" value="regular" checked>
+                        <label for="regular">Regular</label>
+                        <input type="radio" name="window-type" id="incognito" value="incognito">
+                        <label for="incognito">Incognito</label>
+                    </div>
+    
+                    <div class="choice-group">
+                        <h2>
+                            Choose the window state:
+                        </h2>
+                        <input type="radio" name="max-min-window" id="max-window" value="maximized" checked>
+                        <label for="max-window">Maximized</label>
+                        <input type="radio" name="max-min-window" id="min-window" value="minimized">
+                        <label for="min-window">Minimized</label>
+                    </div>
+    
+                    <input class="btn" type="button" id="open-btn" value="Open bookmarks">
+                </form>
+            </div>
         </div>
         
         <script src="../scripts/open.js" async defer type="module"></script>
