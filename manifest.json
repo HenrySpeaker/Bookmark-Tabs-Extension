@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Bookmark All Tabs",
-    "description": "Bookmark all open tabs",
+    "description": "Bookmark all or some open tabs. Choose where the bookmarks are saved. Open previously saved bookmarks in new windows.",
     "version": "0.0.1",
     "icons": {
         "16": "icons/bookmark-16.png",
