@@ -4,6 +4,8 @@ const selectElemId = "select-destination-folder";
 const destSelect = document.getElementById(selectElemId);
 const storage = chrome.storage.local;
 
+await addDestinations(destSelect);
+
 document.getElementById("select-dest").addEventListener("click", function (e) {
   e.preventDefault();
 
@@ -11,5 +13,3 @@ document.getElementById("select-dest").addEventListener("click", function (e) {
   const defaultDestination = formData.get(selectElemId);
   storage.set({ defaultFolderID: defaultDestination });
 });
-
-await addDestinations(destSelect);

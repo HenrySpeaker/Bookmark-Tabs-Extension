@@ -1,13 +1,15 @@
 import { addDestinations } from "./utils.js";
 
-const windows = await chrome.windows.getAll();
-const allTabs = await Promise.all(windows.map((window) => chrome.tabs.query({ windowId: window.id })));
-
 const addBtn = document.getElementById("add-bookmarks-btn");
 const destSelect = document.getElementById("select-destination-folder");
 const dateLabel = document.getElementById("date-label");
 const defaultFolderBtn = document.getElementById("default");
 const defaultFolderName = document.getElementById("default-folder-name");
+
+const windows = await chrome.windows.getAll();
+const allTabs = await Promise.all(windows.map((window) => chrome.tabs.query({ windowId: window.id })));
+const storage = chrome.storage.local;
+const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
 
 const currentDate = new Date();
 const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()).padStart(2, "0")}-${String(
@@ -15,15 +17,25 @@ const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()).p
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
 
-const storage = chrome.storage.local;
-const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
-
 if (!defaultFolderID) {
   defaultFolderBtn.setAttribute("disabled", "");
   defaultFolderName.textContent = "Not set";
 } else {
   defaultFolderName.textContent = (await chrome.bookmarks.get(defaultFolderID))[0].title;
 }
+
+await addDestinations(destSelect);
+
+document.getElementById("add-bookmarks-form").addEventListener("click", async function (e) {
+  if (e.target === addBtn) {
+    e.preventDefault();
+    await addBookmarks(e.target.parentNode);
+  }
+
+  if (e.target === document.getElementById("custom-name")) {
+    document.getElementById("custom-name-radio").checked = true;
+  }
+});
 
 async function addBookmarks(formElem) {
   const formData = new FormData(formElem);
@@ -84,16 +96,3 @@ async function addBookmarks(formElem) {
     })
   );
 }
-
-await addDestinations(destSelect);
-
-document.getElementById("add-bookmarks-form").addEventListener("click", async function (e) {
-  if (e.target === addBtn) {
-    e.preventDefault();
-    await addBookmarks(e.target.parentNode);
-  }
-
-  if (e.target === document.getElementById("custom-name")) {
-    document.getElementById("custom-name-radio").checked = true;
-  }
-});
