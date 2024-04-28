@@ -29,31 +29,49 @@ h1, h2 {
     color: var(--dark-blue);
 }
 
+h1 {
+    margin-top: 0;
+}
+
 h2 {
     margin: 0.25rem auto 0;
 }
 
 select {
-
+    
     border: 2px solid var(--dark-blue);
 }
 
 p {
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.75rem;
+}
+
+input[type="radio"] {
+    accent-color: var(--dark-blue);
 }
 
 .choice-group {
-    margin-bottom: 0.5rem;
-    background-color: var(--gray);
     color: var(--dark-blue);
-    border: 0.25rem solid var(--gray);
-    padding: 0 0.5rem 0.5rem 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.choice-group:not(:last-of-type) {
+    border-bottom: 2px solid var(--dark-blue);
 }
 
 .choice-list {
     margin: 0.5rem 0;
     display: flex;
     flex-direction: column;
+}
+
+.radio-item {
+    display: flex;
+    align-items: flex-start;
+}
+
+.radio-item-text {
+    margin-left: 2px;
 }
 
 .link {
@@ -70,10 +88,7 @@ p {
     color: white;
     font-size: 1rem;
     padding: 0.75rem 1.25rem;
-}
-
-input[type="radio"] {
-    accent-color: var(--dark-blue);
+    margin-top: 0.75rem;
 }
 
 .container {
