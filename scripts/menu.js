@@ -23,6 +23,8 @@ async function menuStartup() {
   if (!defaultFolderID) {
     defaultFolderBtn.setAttribute("disabled", "");
     defaultFolderName.textContent = "Not set";
+    document.getElementById("default").checked = false;
+    document.getElementById("specify").checked = true;
   } else {
     defaultFolderName.textContent = (await chrome.bookmarks.get(defaultFolderID))[0].title;
   }
