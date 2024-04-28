@@ -9,11 +9,12 @@ await runStartup(destinationStartup);
 async function destinationStartup() {
   await addDestinations(destSelect);
 
-  document.getElementById("select-dest").addEventListener("click", function (e) {
+  document.getElementById("select-dest").addEventListener("click", async function (e) {
     e.preventDefault();
 
     const formData = new FormData(document.getElementById("default-form"));
     const defaultDestination = formData.get(selectElemId);
-    storage.set({ defaultFolderID: defaultDestination });
+    await storage.set({ defaultFolderID: defaultDestination });
+    document.getElementById("update-message").textContent = "Default folder updated successfully";
   });
 }
