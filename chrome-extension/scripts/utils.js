@@ -8,13 +8,13 @@ export async function addDestinations(selectElement) {
   while (nodeStack.length > 0) {
     const { node: currNode, level: currLevel } = nodeStack.pop();
 
-    if (currNode.id !== "0" && !("url" in currNode) && currNode.children.length > 0) {
+    if (currNode.id !== "0" && !("url" in currNode)) {
       destinationElements.push(
         `<option value="${currNode.id}">${"&emsp;".repeat(currLevel)}${currNode.title}</option>`
       );
     }
 
-    if (currLevel < maxLevel) {
+    if (currLevel < maxLevel && "children" in currNode) {
       currNode.children.forEach((child, idx) => {
         nodeStack.push({ node: child, level: currLevel + 1 });
       });
