@@ -1,4 +1,4 @@
-const maxLevel = 3;
+const maxLevel = 10;
 
 export async function addDestinations(selectElement) {
   const bookmarkNode = (await chrome.bookmarks.getTree())[0];
