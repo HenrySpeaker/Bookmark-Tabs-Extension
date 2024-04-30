@@ -12,7 +12,7 @@ const storage = chrome.storage.local;
 const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
 
 const currentDate = new Date();
-const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()).padStart(2, "0")}-${String(
+const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(
   currentDate.getDate()
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
