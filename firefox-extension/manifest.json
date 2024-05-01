@@ -1,18 +1,19 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 2,
     "author": "henryspeakerdev+chrome-bookmarks@gmail.com",
     "name": "Bookmark Open Tabs",
     "description": "Bookmark all or some open tabs. Choose where the bookmarks are saved. Open previously saved bookmarks in new windows.",
-    "version": "0.1.1",
+    "version": "0.1.0",
     "icons": {
         "16": "icons/bookmark-16.png",
         "32": "icons/bookmark-32.png",
         "48": "icons/bookmark-48.png",
         "128": "icons/bookmark-128.png"
     },
-    "action": {
+    "browser_action": {
         "default_icon": "icons/bookmark-128.png",
-        "default_popup": "pages/menu.html"
+        "default_popup": "pages/menu.html",
+        "default_title": "Bookmark Open Tabs"
     },
     "permissions": ["bookmarks", "storage", "tabs"]
   }
