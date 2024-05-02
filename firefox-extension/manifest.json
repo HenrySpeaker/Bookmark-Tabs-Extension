@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "author": "henryspeakerdev+chrome-bookmarks@gmail.com",
+    "author": "henryspeakerdev+firefox-bookmarks@gmail.com",
     "name": "Bookmark Open Tabs",
     "description": "Bookmark all or some open tabs. Choose where the bookmarks are saved. Open previously saved bookmarks in new windows.",
     "version": "0.1.0",
