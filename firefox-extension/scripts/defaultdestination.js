@@ -2,7 +2,7 @@ import { addDestinations, runStartup } from "./utils.js";
 
 const selectElemId = "select-destination-folder";
 const destSelect = document.getElementById(selectElemId);
-const storage = chrome.storage.local;
+const storage = browser.storage.local;
 
 await runStartup(destinationStartup);
 

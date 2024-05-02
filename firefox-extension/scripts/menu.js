@@ -6,9 +6,9 @@ const dateLabel = document.getElementById("date-label");
 const defaultFolderBtn = document.getElementById("default");
 const defaultFolderName = document.getElementById("default-folder-name");
 
-const windows = await chrome.windows.getAll();
-const allTabs = await Promise.all(windows.map((window) => chrome.tabs.query({ windowId: window.id })));
-const storage = chrome.storage.local;
+const windows = await browser.windows.getAll();
+const allTabs = await Promise.all(windows.map((window) => browser.tabs.query({ windowId: window.id })));
+const storage = browser.storage.local;
 const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
 
 const currentDate = new Date();
@@ -26,7 +26,7 @@ async function menuStartup() {
     document.getElementById("default").checked = false;
     document.getElementById("specify").checked = true;
   } else {
-    defaultFolderName.textContent = (await chrome.bookmarks.get(defaultFolderID))[0].title;
+    defaultFolderName.textContent = (await browser.bookmarks.get(defaultFolderID))[0].title;
   }
 
   await addDestinations(destSelect);
@@ -74,7 +74,7 @@ async function addBookmarks(formElem) {
       tabs = allTabs.filter((window) => window[0].incognito);
       break;
     case "current":
-      tabs = [await chrome.tabs.query({ currentWindow: true })];
+      tabs = [await browser.tabs.query({ currentWindow: true })];
       break;
   }
 
@@ -89,14 +89,14 @@ async function addBookmarks(formElem) {
       break;
   }
 
-  const rootNode = await chrome.bookmarks.create({ parentId: destNodeID, title: rootTitle });
+  const rootNode = await browser.bookmarks.create({ parentId: destNodeID, title: rootTitle });
 
   await Promise.all(
     tabs.map(async (window, idx) => {
-      const windowNode = await chrome.bookmarks.create({ parentId: rootNode.id, title: String(idx + 1) });
+      const windowNode = await browser.bookmarks.create({ parentId: rootNode.id, title: String(idx + 1) });
       await Promise.all(
         window.map(async (tab) => {
-          await chrome.bookmarks.create({ parentId: windowNode.id, title: tab.title, url: tab.url });
+          await browser.bookmarks.create({ parentId: windowNode.id, title: tab.title, url: tab.url });
         })
       );
     })

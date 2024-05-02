@@ -1,6 +1,7 @@
 body {
     margin: 0;
     min-width: 400px;
+    max-width: 400px;
     min-height: 200px;
 
     --dark-blue: #001524;
@@ -19,6 +20,7 @@ nav {
     flex-direction: column;
     background-color: var(--dark-blue);
     padding: 1rem;
+    max-width: 350px;
 }
 
 form {
@@ -97,6 +99,10 @@ input[type="radio"] {
 
 #contents {
     position: relative;
+}
+
+#incognito-message {
+    color: red;
 }
 
 #spinner {
