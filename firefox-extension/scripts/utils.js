@@ -3,15 +3,16 @@ const maxLevel = 10;
 export async function addDestinations(selectElement) {
   const bookmarkNode = (await browser.bookmarks.getTree())[0];
   const destinationElements = [];
-  const nodeStack = [{ node: bookmarkNode, level: 0 }];
+  const nodeStack = [{ node: bookmarkNode, level: -1 }];
 
   while (nodeStack.length > 0) {
     const { node: currNode, level: currLevel } = nodeStack.pop();
 
     if (currNode.id !== "0" && currNode.type === "folder" && currNode.title.length > 0) {
-      destinationElements.push(
-        `<option value="${currNode.id}">${"&emsp;".repeat(currLevel)}${currNode.title}</option>`
-      );
+      const newOpt = document.createElement("option");
+      newOpt.setAttribute("value", currNode.id);
+      newOpt.innerText = "\u00A0\u00A0\u00A0".repeat(currLevel) + currNode.title;
+      destinationElements.push(newOpt);
     }
 
     if (currLevel < maxLevel && "children" in currNode) {
@@ -21,7 +22,9 @@ export async function addDestinations(selectElement) {
     }
   }
 
-  selectElement.innerHTML = destinationElements.join("");
+  destinationElements.forEach((opt) => {
+    selectElement.appendChild(opt);
+  });
 }
 
 export async function runStartup(startupFunction) {
