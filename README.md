@@ -5,3 +5,8 @@ This extension allows users to save some or all open tabs as bookmarks. Users ca
 The extension also allows users to automatically open saved bookmarks, either by opening all bookmarks in a single window or opening each folder's bookmarks in a separate window.
 
 The extension is available for Chromium-based browsers (Chrome, Brave, etc.) [here](https://chromewebstore.google.com/detail/bookmark-open-tabs/ljlbjgkppmkeaacgjbhenkblcjahfhla?hl=en-US) and for Firefox browsers [here](https://addons.mozilla.org/en-US/firefox/addon/bookmark-open-tabs/).
+
+![Screenshot of main extension page](images/1.png)
+![Second screenshot of main extension page](images/2.png)
+![Screenshot of open bookmarks extension page](images/3.png)
+![Screenshot of default folder extension page](images/4.png)
