@@ -1,5 +1,13 @@
 import { addDestinations, runStartup } from "./utils.js";
 
+const bookmarkingPage = document.getElementById("bookmarking");
+const bookmarkingCompletePage = document.getElementById("bookmarking-complete");
+const contentsPage = document.getElementById("contents");
+const bookmarkingCompleteButton = document.getElementById("bookmarking-complete-button");
+bookmarkingPage.remove();
+bookmarkingCompletePage.remove();
+bookmarkingCompleteButton.addEventListener("click", endBookmarkingComplete);
+
 const addBtn = document.getElementById("add-bookmarks-btn");
 const destSelect = document.getElementById("select-destination-folder");
 const dateLabel = document.getElementById("date-label");
@@ -13,7 +21,7 @@ const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
 
 const currentDate = new Date();
 const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(
-  currentDate.getDate()
+  currentDate.getDate(),
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
 
@@ -91,14 +99,25 @@ async function addBookmarks(formElem) {
 
   const rootNode = await browser.bookmarks.create({ parentId: destNodeID, title: rootTitle });
 
+  contentsPage.remove();
+  document.body.appendChild(bookmarkingPage);
+
   await Promise.all(
     tabs.map(async (window, idx) => {
       const windowNode = await browser.bookmarks.create({ parentId: rootNode.id, title: String(idx + 1) });
       await Promise.all(
         window.map(async (tab) => {
           await browser.bookmarks.create({ parentId: windowNode.id, title: tab.title, url: tab.url });
-        })
+        }),
       );
-    })
+    }),
   );
+
+  bookmarkingPage.remove();
+  document.body.appendChild(bookmarkingCompletePage);
+}
+
+function endBookmarkingComplete() {
+  bookmarkingCompletePage.remove();
+  document.body.appendChild(contentsPage);
 }
