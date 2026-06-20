@@ -82,7 +82,7 @@ input[type="radio"] {
     padding: 10px 20px;
 }
 
-.btn {
+.btn, #bookmarking-complete-button {
     background-color: var(--dark-blue);
     border: none;
     color: white;
@@ -99,7 +99,7 @@ input[type="radio"] {
     position: relative;
 }
 
-#spinner {
+#spinner, #bookmarking-spinner {
     border: 20px solid var(--gray);
     border-top: 20px solid var(--orange);
     border-radius: 50%;
@@ -114,4 +114,10 @@ input[type="radio"] {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+#bookmarking, #bookmarking-complete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
