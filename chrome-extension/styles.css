@@ -121,3 +121,8 @@ input[type="radio"] {
     flex-direction: column;
     align-items: center;
 }
+
+#bookmarking-message {
+    margin-top: 170px;
+    margin-bottom: 16px;
+}
