@@ -1,12 +1,17 @@
-import { addDestinations, runStartup } from "./utils.js";
+import { addDestinations, runStartup, buildHashString, buildGroupBookmarkTitle, extractHashString } from "./utils.js";
 
 const bookmarkingPage = document.getElementById("bookmarking");
 const bookmarkingCompletePage = document.getElementById("bookmarking-complete");
+const bookmarkingFailedPage = document.getElementById("bookmarking-failed");
 const contentsPage = document.getElementById("contents");
 const bookmarkingCompleteButton = document.getElementById("bookmarking-complete-button");
+const bookmarkingFailedButton = document.getElementById("bookmarking-failed-button");
+
 bookmarkingPage.remove();
 bookmarkingCompletePage.remove();
+bookmarkingFailedPage.remove();
 bookmarkingCompleteButton.addEventListener("click", endBookmarkingComplete);
+bookmarkingFailedButton.addEventListener("click", endBookmarkingComplete);
 
 const addBtn = document.getElementById("add-bookmarks-btn");
 const destSelect = document.getElementById("select-destination-folder");
@@ -16,6 +21,7 @@ const defaultFolderName = document.getElementById("default-folder-name");
 
 const windows = await chrome.windows.getAll();
 const allTabs = await Promise.all(windows.map((window) => chrome.tabs.query({ windowId: window.id })));
+const allGroups = await chrome.tabGroups.query({});
 const storage = chrome.storage.local;
 const defaultFolderID = (await storage.get("defaultFolderID"))?.defaultFolderID;
 
@@ -24,6 +30,39 @@ const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 
   currentDate.getDate(),
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
+
+// const groupWindowMap = new Map();
+
+// console.log("Tab groups:");
+// allTabs.forEach((window, idx) => {
+//   // windowIdxMap.set(window.id, idx);
+
+//   window
+//     .filter((tab) => tab.groupId > -1)
+//     .forEach((tab) => {
+//       if (!groupWindowMap.has(tab.groupId)) {
+//         console.log("New groupId found");
+//         groupWindowMap.set(tab.groupId, tab.windowId);
+//       }
+
+//       console.log(`Title: ${tab.url} | Group ID: ${tab.groupId}`);
+//     });
+// });
+
+// console.log("Groups:");
+// console.log(allGroups);
+
+// const groupIdxArr = Array.from({ length: allTabs.length }, () => []);
+
+// console.log(groupWindowMap);
+// // console.log(windowIdxMap);
+
+// for (const [key, value] of groupWindowMap) {
+//   groupIdxArr[windowIdxMap[value]].push(key);
+// }
+
+// console.log("Group window index array");
+// console.log(groupIdxArr);
 
 await runStartup(menuStartup);
 
@@ -97,27 +136,68 @@ async function addBookmarks(formElem) {
       break;
   }
 
-  const rootNode = await chrome.bookmarks.create({ parentId: destNodeID, title: rootTitle });
+  let bookmarkingSuccess = true;
 
-  contentsPage.remove();
-  document.body.appendChild(bookmarkingPage);
+  try {
+    const rootNode = await chrome.bookmarks.create({ parentId: destNodeID, title: rootTitle });
 
-  await Promise.all(
-    tabs.map(async (window, idx) => {
-      const windowNode = await chrome.bookmarks.create({ parentId: rootNode.id, title: String(idx + 1) });
-      await Promise.all(
-        window.map(async (tab) => {
-          await chrome.bookmarks.create({ parentId: windowNode.id, title: tab.title, url: tab.url });
-        }),
-      );
-    }),
-  );
+    contentsPage.remove();
+    document.body.appendChild(bookmarkingPage);
 
-  bookmarkingPage.remove();
-  document.body.appendChild(bookmarkingCompletePage);
+    const groupWindowIdxMap = {};
+
+    await Promise.all(
+      tabs.map(async (window, idx) => {
+        const windowNode = await chrome.bookmarks.create({ parentId: rootNode.id, title: String(idx + 1) });
+        await Promise.all(
+          window.map(async (tab) => {
+            let groupIdTitle = "";
+
+            if (tab.groupId > -1) {
+              groupIdTitle = buildHashString("group id:" + tab.groupId);
+
+              if (!Object.hasOwn(groupWindowIdxMap, tab.groupId)) {
+                groupWindowIdxMap[tab.groupId] = idx;
+              }
+            }
+            await chrome.bookmarks.create({ parentId: windowNode.id, title: tab.title + groupIdTitle, url: tab.url });
+          }),
+        );
+      }),
+    );
+    const groupData = {
+      groups: allGroups,
+      groupMap: groupWindowIdxMap,
+    };
+    console.log(groupData);
+
+    allGroups.forEach((group) => {
+      console.log(tabs[groupWindowIdxMap[group.id]]);
+    });
+
+    const encodedGroupData = btoa(JSON.stringify(groupData));
+    console.log(encodedGroupData);
+    const groupDataHashString = buildHashString(encodedGroupData);
+    console.log(groupDataHashString);
+    await chrome.bookmarks.create({ parentId: rootNode.id, title: buildGroupBookmarkTitle(groupData), url: "" });
+    // console.log(parsedGroupData);
+  } catch (e) {
+    bookmarkingSuccess = false;
+    console.error(e);
+  } finally {
+    bookmarkingPage.remove();
+  }
+
+  // bookmarkingPage.remove();
+  if (bookmarkingSuccess) {
+    document.body.appendChild(bookmarkingCompletePage);
+  } else {
+    document.body.append(bookmarkingFailedPage);
+  }
 }
 
 function endBookmarkingComplete() {
   bookmarkingCompletePage.remove();
+  bookmarkingFailedPage.remove();
   document.body.appendChild(contentsPage);
 }

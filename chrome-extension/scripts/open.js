@@ -1,4 +1,4 @@
-import { addDestinations, runStartup } from "./utils.js";
+import { addDestinations, runStartup, groupDataText, extractGroupData, extractHashString } from "./utils.js";
 
 const form = document.getElementById("open-form");
 
@@ -10,7 +10,6 @@ async function openStartup() {
   form.addEventListener("click", async function (e) {
     if (e.target === document.getElementById("open-btn")) {
       const formData = new FormData(form);
-
       const startFolderID = formData.get("folder-select");
       const windowed = formData.get("depth-choice") === "windowed";
       const regularWindow = formData.get("window-type") === "regular";
@@ -23,6 +22,7 @@ async function openStartup() {
 
       const bookmarkQueue = [startFolder];
 
+      let groupData = null;
       while (bookmarkQueue.length > 0) {
         const currBookmark = bookmarkQueue.shift();
 
@@ -37,6 +37,10 @@ async function openStartup() {
             } else {
               bookmarkWindows[0].push(bookmark);
             }
+          } else if (bookmark.title.substring(0, groupDataText.length) === groupDataText) {
+            console.log("Group metadata found:");
+            groupData = extractGroupData(bookmark.title);
+            console.log(groupData);
           } else {
             bookmarkQueue.push(bookmark);
           }
@@ -45,27 +49,66 @@ async function openStartup() {
         if (windowed) bookmarkWindows.push(currWindow);
       }
 
+      // return;
+
       const windowIDs = [];
+      const groups = {};
 
       await Promise.all(
-        bookmarkWindows.map(async (windowContents) => {
+        bookmarkWindows.map(async (windowContents, idx) => {
           const window = await chrome.windows.create({
             incognito: !regularWindow,
             state: windowState,
           });
 
+          if (groupData !== null) {
+            for (const groupId of Object.keys(groupData.groupMap)) {
+              if (groupData.groupMap[groupId] === idx) {
+                groups[groupId] = {
+                  windowId: window.id,
+                  tabIds: [],
+                };
+              }
+            }
+          }
+
           windowIDs.push(window.id);
 
           return Promise.all(
             windowContents.map(async (bookmark) => {
-              chrome.tabs.create({
+              const title = bookmark.title;
+              let groupId = -1;
+
+              if (title.charAt(title.length - 1) === ">") {
+                for (let idx = 0; idx < title.length; idx++) {
+                  if (title.charAt(idx) === "<") {
+                    const possGroupId = extractHashString(title.substring(idx));
+                    console.log(`Possible group ID found: ${possGroupId}`);
+
+                    if (possGroupId.length > 0) {
+                      groupId = +possGroupId.substring(possGroupId.indexOf(":") + 1);
+                      console.log(`Parsed group ID: ${groupId}`);
+                      break;
+                    }
+                  }
+                }
+              }
+
+              const newTab = await chrome.tabs.create({
                 windowId: window.id,
                 url: bookmark.url,
               });
-            })
+
+              if (groupId >= 0) {
+                groups[groupId].tabIds.push(newTab.id);
+              }
+            }),
           );
-        })
+        }),
       );
+
+      console.log("groups:");
+      console.log(groups);
 
       await Promise.all(
         windowIDs
@@ -77,8 +120,29 @@ async function openStartup() {
           .map(async (tabs) => {
             tabs = await tabs;
             chrome.tabs.remove(tabs[0].id);
-          })
+          }),
       );
+
+      for (const groupId of Object.keys(groups)) {
+        console.log(`Grouping for id: ${groupId}`);
+        const windowId = groups[groupId].window;
+        const newGroupId = await chrome.tabs.group({
+          createProperties: {
+            windowId: groups[groupId].windowId,
+          },
+          tabIds: groups[groupId].tabIds,
+        });
+        groups[groupId].newGroupId = newGroupId;
+      }
+
+      for (const oldGroup of groupData.groups) {
+        const groupId = oldGroup.id;
+        await chrome.tabGroups.update(groups[groupId].newGroupId, {
+          collapsed: oldGroup.collapsed,
+          color: oldGroup.color,
+          title: oldGroup.title,
+        });
+      }
     }
   });
 }

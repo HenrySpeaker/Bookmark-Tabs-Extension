@@ -82,7 +82,7 @@ input[type="radio"] {
     padding: 10px 20px;
 }
 
-.btn, #bookmarking-complete-button {
+.btn, #bookmarking-complete-button, #bookmarking-failed-button {
     background-color: var(--dark-blue);
     border: none;
     color: white;
@@ -116,7 +116,7 @@ input[type="radio"] {
     100% { transform: rotate(360deg); }
 }
 
-#bookmarking, #bookmarking-complete {
+#bookmarking, #bookmarking-complete, #bookmarking-failed {
     display: flex;
     flex-direction: column;
     align-items: center;
