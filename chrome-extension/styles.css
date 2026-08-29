@@ -126,3 +126,7 @@ input[type="radio"] {
     margin-top: 170px;
     margin-bottom: 16px;
 }
+
+input[type="checkbox"] {
+    accent-color: var(--dark-blue);
+}

@@ -14,6 +14,7 @@ async function openStartup() {
       const windowed = formData.get("depth-choice") === "windowed";
       const regularWindow = formData.get("window-type") === "regular";
       const windowState = formData.get("max-min-window");
+      const shouldOpenGroups = formData.get("open-groups-box") === "yes";
 
       const bookmarkWindows = [];
       if (!windowed) bookmarkWindows.push([]);
@@ -46,10 +47,8 @@ async function openStartup() {
           }
         });
 
-        if (windowed) bookmarkWindows.push(currWindow);
+        if (windowed && currWindow.length > 0) bookmarkWindows.push(currWindow);
       }
-
-      // return;
 
       const windowIDs = [];
       const groups = {};
@@ -123,9 +122,12 @@ async function openStartup() {
           }),
       );
 
+      if (!shouldOpenGroups) {
+        return;
+      }
+
       for (const groupId of Object.keys(groups)) {
         console.log(`Grouping for id: ${groupId}`);
-        const windowId = groups[groupId].window;
         const newGroupId = await chrome.tabs.group({
           createProperties: {
             windowId: groups[groupId].windowId,

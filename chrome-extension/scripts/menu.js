@@ -31,39 +31,6 @@ const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 
 ).padStart(2, "0")}`;
 dateLabel.textContent = `Today's Date (${dateStr})`;
 
-// const groupWindowMap = new Map();
-
-// console.log("Tab groups:");
-// allTabs.forEach((window, idx) => {
-//   // windowIdxMap.set(window.id, idx);
-
-//   window
-//     .filter((tab) => tab.groupId > -1)
-//     .forEach((tab) => {
-//       if (!groupWindowMap.has(tab.groupId)) {
-//         console.log("New groupId found");
-//         groupWindowMap.set(tab.groupId, tab.windowId);
-//       }
-
-//       console.log(`Title: ${tab.url} | Group ID: ${tab.groupId}`);
-//     });
-// });
-
-// console.log("Groups:");
-// console.log(allGroups);
-
-// const groupIdxArr = Array.from({ length: allTabs.length }, () => []);
-
-// console.log(groupWindowMap);
-// // console.log(windowIdxMap);
-
-// for (const [key, value] of groupWindowMap) {
-//   groupIdxArr[windowIdxMap[value]].push(key);
-// }
-
-// console.log("Group window index array");
-// console.log(groupIdxArr);
-
 await runStartup(menuStartup);
 
 async function menuStartup() {
@@ -96,6 +63,7 @@ async function addBookmarks(formElem) {
   const destType = formData.get("destination");
   const windowType = formData.get("window-type");
   const nameType = formData.get("root-name");
+  const shouldSaveGroups = formData.get("save-groups-box") === "yes";
 
   let destNodeID = "2";
 
@@ -153,7 +121,7 @@ async function addBookmarks(formElem) {
           window.map(async (tab) => {
             let groupIdTitle = "";
 
-            if (tab.groupId > -1) {
+            if (shouldSaveGroups && tab.groupId > -1) {
               groupIdTitle = buildHashString("group id:" + tab.groupId);
 
               if (!Object.hasOwn(groupWindowIdxMap, tab.groupId)) {
@@ -165,21 +133,25 @@ async function addBookmarks(formElem) {
         );
       }),
     );
-    const groupData = {
-      groups: allGroups,
-      groupMap: groupWindowIdxMap,
-    };
-    console.log(groupData);
 
-    allGroups.forEach((group) => {
-      console.log(tabs[groupWindowIdxMap[group.id]]);
-    });
+    if (shouldSaveGroups) {
+      const groupData = {
+        groups: allGroups,
+        groupMap: groupWindowIdxMap,
+      };
+      console.log(groupData);
 
-    const encodedGroupData = btoa(JSON.stringify(groupData));
-    console.log(encodedGroupData);
-    const groupDataHashString = buildHashString(encodedGroupData);
-    console.log(groupDataHashString);
-    await chrome.bookmarks.create({ parentId: rootNode.id, title: buildGroupBookmarkTitle(groupData), url: "" });
+      allGroups.forEach((group) => {
+        console.log(tabs[groupWindowIdxMap[group.id]]);
+      });
+
+      const encodedGroupData = btoa(JSON.stringify(groupData));
+      console.log(encodedGroupData);
+      const groupDataHashString = buildHashString(encodedGroupData);
+      console.log(groupDataHashString);
+      await chrome.bookmarks.create({ parentId: rootNode.id, title: buildGroupBookmarkTitle(groupData), url: "" });
+    }
+
     // console.log(parsedGroupData);
   } catch (e) {
     bookmarkingSuccess = false;
