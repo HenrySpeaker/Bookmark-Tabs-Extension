@@ -152,6 +152,13 @@ async function openStartup() {
 
       for (const oldGroup of groupData.groups) {
         const groupId = oldGroup.id;
+
+        if (!Object.hasOwn(groups, groupId)) {
+          console.log("Skipping group, no matching ID found among open groups:");
+          console.log(oldGroup);
+          continue;
+        }
+
         await browser.tabGroups.update(groups[groupId].newGroupId, {
           collapsed: oldGroup.collapsed,
           color: oldGroup.color,

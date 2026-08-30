@@ -60,17 +60,6 @@ async function openStartup() {
             state: windowState,
           });
 
-          if (groupData !== null) {
-            for (const groupId of Object.keys(groupData.groupMap)) {
-              if (groupData.groupMap[groupId] === idx) {
-                groups[groupId] = {
-                  windowId: window.id,
-                  tabIds: [],
-                };
-              }
-            }
-          }
-
           windowIDs.push(window.id);
 
           return Promise.all(
@@ -99,6 +88,12 @@ async function openStartup() {
               });
 
               if (groupId >= 0) {
+                if (!Object.hasOwn(groups, groupId)) {
+                  groups[groupId] = {
+                    windowId: window.id,
+                    tabIds: [],
+                  };
+                }
                 groups[groupId].tabIds.push(newTab.id);
               }
             }),
@@ -139,6 +134,13 @@ async function openStartup() {
 
       for (const oldGroup of groupData.groups) {
         const groupId = oldGroup.id;
+
+        if (!Object.hasOwn(groups, groupId)) {
+          console.log("Skipping group, no matching ID found among open groups:");
+          console.log(oldGroup);
+          continue;
+        }
+
         await chrome.tabGroups.update(groups[groupId].newGroupId, {
           collapsed: oldGroup.collapsed,
           color: oldGroup.color,
