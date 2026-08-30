@@ -36,7 +36,7 @@ dateLabel.textContent = `Today's Date (${dateStr})`;
 await runStartup(menuStartup);
 
 async function menuStartup() {
-  console.log("In menu startup");
+  // console.log("In menu startup");
   if (!defaultFolderID) {
     defaultFolderBtn.setAttribute("disabled", "");
     defaultFolderName.textContent = "Not set";
@@ -46,9 +46,9 @@ async function menuStartup() {
     defaultFolderName.textContent = (await browser.bookmarks.get(defaultFolderID))[0].title;
   }
 
-  console.log("Starting to add destinations");
+  // console.log("Starting to add destinations");
   await addDestinations(destSelect);
-  console.log("destinations added");
+  // console.log("destinations added");
 
   document.getElementById("add-bookmarks-form").addEventListener("click", async function (e) {
     if (e.target === addBtn) {
@@ -144,16 +144,16 @@ async function addBookmarks(formElem) {
         groups: allGroups,
         groupMap: groupWindowIdxMap,
       };
-      console.log(groupData);
+      // console.log(groupData);
 
-      allGroups.forEach((group) => {
-        console.log(tabs[groupWindowIdxMap[group.id]]);
-      });
+      // allGroups.forEach((group) => {
+      //   console.log(tabs[groupWindowIdxMap[group.id]]);
+      // });
 
       const encodedGroupData = btoa(JSON.stringify(groupData));
-      console.log(encodedGroupData);
+      // console.log(encodedGroupData);
       const groupDataHashString = buildHashString(encodedGroupData);
-      console.log(groupDataHashString);
+      // console.log(groupDataHashString);
       await browser.bookmarks.create({
         parentId: rootNode.id,
         title: buildGroupBookmarkTitle(groupData),

@@ -139,16 +139,16 @@ async function addBookmarks(formElem) {
         groups: allGroups,
         groupMap: groupWindowIdxMap,
       };
-      console.log(groupData);
+      // console.log(groupData);
 
-      allGroups.forEach((group) => {
-        console.log(tabs[groupWindowIdxMap[group.id]]);
-      });
+      // allGroups.forEach((group) => {
+      //   console.log(tabs[groupWindowIdxMap[group.id]]);
+      // });
 
       const encodedGroupData = btoa(JSON.stringify(groupData));
-      console.log(encodedGroupData);
+      // console.log(encodedGroupData);
       const groupDataHashString = buildHashString(encodedGroupData);
-      console.log(groupDataHashString);
+      // console.log(groupDataHashString);
       await chrome.bookmarks.create({ parentId: rootNode.id, title: buildGroupBookmarkTitle(groupData), url: "" });
     }
 

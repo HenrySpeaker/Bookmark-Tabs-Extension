@@ -39,9 +39,9 @@ async function openStartup() {
               bookmarkWindows[0].push(bookmark);
             }
           } else if (bookmark.title.substring(0, groupDataText.length) === groupDataText) {
-            console.log("Group metadata found:");
+            // console.log("Group metadata found:");
             groupData = extractGroupData(bookmark.title);
-            console.log(groupData);
+            // console.log(groupData);
           } else {
             bookmarkQueue.push(bookmark);
           }
@@ -71,11 +71,11 @@ async function openStartup() {
                 for (let idx = 0; idx < title.length; idx++) {
                   if (title.charAt(idx) === "<") {
                     const possGroupId = extractHashString(title.substring(idx));
-                    console.log(`Possible group ID found: ${possGroupId}`);
+                    // console.log(`Possible group ID found: ${possGroupId}`);
 
                     if (possGroupId.length > 0) {
                       groupId = +possGroupId.substring(possGroupId.indexOf(":") + 1);
-                      console.log(`Parsed group ID: ${groupId}`);
+                      // console.log(`Parsed group ID: ${groupId}`);
                       break;
                     }
                   }
@@ -101,8 +101,8 @@ async function openStartup() {
         }),
       );
 
-      console.log("groups:");
-      console.log(groups);
+      // console.log("groups:");
+      // console.log(groups);
 
       await Promise.all(
         windowIDs
@@ -122,7 +122,7 @@ async function openStartup() {
       }
 
       for (const groupId of Object.keys(groups)) {
-        console.log(`Grouping for id: ${groupId}`);
+        // console.log(`Grouping for id: ${groupId}`);
         const newGroupId = await chrome.tabs.group({
           createProperties: {
             windowId: groups[groupId].windowId,
@@ -136,8 +136,8 @@ async function openStartup() {
         const groupId = oldGroup.id;
 
         if (!Object.hasOwn(groups, groupId)) {
-          console.log("Skipping group, no matching ID found among open groups:");
-          console.log(oldGroup);
+          // console.log("Skipping group, no matching ID found among open groups:");
+          // console.log(oldGroup);
           continue;
         }
 

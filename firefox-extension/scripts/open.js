@@ -28,12 +28,12 @@ async function openStartup() {
         const currWindow = [];
 
         currBookmark?.children.forEach((bookmark) => {
-          console.log("bookmark");
-          console.log(bookmark);
+          // console.log("bookmark");
+          // console.log(bookmark);
           if (bookmark.title.substring(0, groupDataText.length) === groupDataText) {
-            console.log("Group metadata found:");
+            // console.log("Group metadata found:");
             groupData = extractGroupData(bookmark.title);
-            console.log(groupData);
+            // console.log(groupData);
           } else if (bookmark?.url !== undefined) {
             if (windowed) {
               currWindow.push(bookmark);
@@ -48,19 +48,19 @@ async function openStartup() {
         if (windowed && currWindow.length > 0) bookmarkWindows.push(currWindow);
       }
 
-      console.log("Group data:");
-      console.log(groupData);
+      // console.log("Group data:");
+      // console.log(groupData);
 
-      console.log("Bookmark windows");
-      console.log(bookmarkWindows);
+      // console.log("Bookmark windows");
+      // console.log(bookmarkWindows);
 
       const windowIDs = [];
       const groups = {};
 
       await Promise.all(
         bookmarkWindows.map(async (windowContents, idx) => {
-          console.log("Opening window");
-          console.log(windowContents);
+          // console.log("Opening window");
+          // console.log(windowContents);
           const window = await browser.windows.create({
             incognito: !regularWindow,
             state: windowState,
@@ -68,16 +68,16 @@ async function openStartup() {
             url: "https://www.firefox.com",
           });
 
-          console.log("window opening complete");
+          // console.log("window opening complete");
 
-          console.log("Group search in window");
+          // console.log("Group search in window");
           windowIDs.push(window.id);
 
-          console.log("opening tabs");
+          // console.log("opening tabs");
 
           return Promise.all(
             windowContents.map(async (bookmark) => {
-              console.log(`Opening tab ${bookmark.title} in window ${window.id}`);
+              // console.log(`Opening tab ${bookmark.title} in window ${window.id}`);
               const title = bookmark.title;
               let groupId = -1;
 
@@ -85,11 +85,11 @@ async function openStartup() {
                 for (let idx = 0; idx < title.length; idx++) {
                   if (title.charAt(idx) === "<") {
                     const possGroupId = extractHashString(title.substring(idx));
-                    console.log(`Possible group ID found: ${possGroupId}`);
+                    // console.log(`Possible group ID found: ${possGroupId}`);
 
                     if (possGroupId.length > 0) {
                       groupId = +possGroupId.substring(possGroupId.indexOf(":") + 1);
-                      console.log(`Parsed group ID: ${groupId}`);
+                      // console.log(`Parsed group ID: ${groupId}`);
                       break;
                     }
                   }
@@ -115,8 +115,8 @@ async function openStartup() {
         }),
       );
 
-      console.log("groups:");
-      console.log(groups);
+      // console.log("groups:");
+      // console.log(groups);
 
       if (!shouldOpenGroups) {
         return;
@@ -140,7 +140,7 @@ async function openStartup() {
       }
 
       for (const groupId of Object.keys(groups)) {
-        console.log(`Grouping for id: ${groupId}`);
+        // console.log(`Grouping for id: ${groupId}`);
         const newGroupId = await browser.tabs.group({
           createProperties: {
             windowId: groups[groupId].windowId,
@@ -154,8 +154,8 @@ async function openStartup() {
         const groupId = oldGroup.id;
 
         if (!Object.hasOwn(groups, groupId)) {
-          console.log("Skipping group, no matching ID found among open groups:");
-          console.log(oldGroup);
+          // console.log("Skipping group, no matching ID found among open groups:");
+          // console.log(oldGroup);
           continue;
         }
 
@@ -166,9 +166,9 @@ async function openStartup() {
         });
       }
     } else if (e.target === document.getElementById("open-groups")) {
-      console.log("open groups clicked");
+      // console.log("open groups clicked");
       const shouldOpenGroups = formData.get("open-groups-box") === "yes";
-      console.log(`Current shouldOpenGroups: ${shouldOpenGroups}`);
+      // console.log(`Current shouldOpenGroups: ${shouldOpenGroups}`);
       ffWarning.style.display = shouldOpenGroups ? "" : "none";
     }
   });

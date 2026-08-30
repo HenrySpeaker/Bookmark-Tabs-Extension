@@ -57,8 +57,8 @@ export function extractHashString(str) {
   let [plain, base] = matches[0].split("|");
   plain = plain.substring(1);
   base = base.substring(0, base.length - 1);
-  console.log(plain);
-  console.log(base);
+  // console.log(plain);
+  // console.log(base);
 
   if (btoa(plain) !== base) {
     return "";
