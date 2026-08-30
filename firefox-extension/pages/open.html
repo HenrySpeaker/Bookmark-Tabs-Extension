@@ -35,8 +35,20 @@
                         </h2>
                         <select name="folder-select" id="folder-select"></select>
                     </div>
+    
+                    <div class="choice-group">
+                        <h2>
+                            Choose how the bookmarks will be opened:
+                        </h2>
+                        <input type="radio" name="depth-choice" id="windowed" value="windowed" checked>
+                        <label for="windowed">Separate windows</label>
+                        <br>
+                        <input type="radio" name="depth-choice" id="flat" value="flat">
+                        <label for="flat">All bookmarks in one window</label>
+                    </div>
 
                     <div class="choice-group">
+
                         <h2>
                             Choose the window type:
                         </h2>
@@ -56,7 +68,18 @@
                         <input type="radio" name="max-min-window" id="min-window" value="minimized">
                         <label for="min-window">Minimized</label>
                     </div>
-    
+
+                    <div class="choice-group" id="group-div">
+                        <h2>
+                            Open tabs in saved groups:
+                        </h2>
+                        <p>Note: Groups must have been included in saved bookmarks.</p>
+                        <input type="checkbox" name="open-groups-box" id="open-groups" value="yes" checked>
+                        <label for="open-groups">Open groups (if available)</label>
+                        <p id="firefox-warning" style="color: red">Warning: This will fail unless <span style="font-weight: bold">ui.popup.disable_autohide</span> is enabled in <span style="font-style: italic">about:config.</span>
+                        <br>It may be necessary to press ESC to close the extension.
+                        </p>
+                    </div>
                     <input class="btn" type="button" id="open-btn" value="Open bookmarks">
                 </form>
             </div>
